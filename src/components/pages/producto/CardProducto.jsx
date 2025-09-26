@@ -9,10 +9,10 @@ const CardProducto = () => {
           <img src={alfajores} alt="cafe" className="card-img-top-nueva" />
         </div>
         <Card.Body>
-        <Card.Title className="primary-font">Capuchino</Card.Title>
+        <Card.Title className="primary-font">Galleta rellena de dulce de leche</Card.Title>
         <Card.Text>
-          Descripción: Descripción: Espuma de leche cremosa sobre un espresso fuerte. <br className="mb-2"/> 
-          <span className="fw-bold">Precio: $350</span></Card.Text>
+          Descripción: Crujiente por fuera y suave por dentro, con un delicioso relleno de dulce de leche artesanal. <br className="mb-2"/> 
+          <span className="fw-bold">Precio: $1000</span></Card.Text>
         </Card.Body>
         <Card.Footer className="text-end">
         <Button variant='warning' className="me-2" >Ver más</Button>
