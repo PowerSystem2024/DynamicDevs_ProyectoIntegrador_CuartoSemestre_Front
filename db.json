@@ -1,0 +1,49 @@
+{
+  "productos": [
+    {
+      "nombreProducto": "medialuna",
+      "precio": "700",
+      "imagen": "https://images.pexels.com/photos/2135/food-france-morning-breakfast.jpg",
+      "categoria": "Dulce",
+      "descripcion_breve": "Medialuna con masa de hojaldre",
+      "descripcion_amplia": "La medialuna es sinónimo de textura crujiente y sabor irresistible, cualidades que lo han convertido en un producto al que pocos pueden resistirse.",
+      "id": "21d4"
+    },
+    {
+      "nombreProducto": "café",
+      "precio": "1400",
+      "imagen": "https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg",
+      "categoria": "Infusiones",
+      "descripcion_breve": "Café exresso",
+      "descripcion_amplia": "bebida de café concentrada y aromática que se prepara haciendo pasar agua caliente a alta presión por granos de café muy finamente molidos.",
+      "id": "c4ac"
+    },
+    {
+      "nombreProducto": "te verde",
+      "precio": "1000",
+      "imagen": "https://img.freepik.com/foto-gratis/placa-madera-hoja-objeto-alimentacion-saludable_1172-451.jpg",
+      "categoria": "Infusiones",
+      "descripcion_breve": "Una bebida de origen Chino",
+      "descripcion_amplia": "Se deriva de las hojas de la planta Camellia sinensis y es apreciado tanto por su sabor refrescante como por sus innumerables beneficios para la salud, lo que lo convierte en una elección cada vez más popular.",
+      "id": "a49e"
+    },
+    {
+      "id": "5b39",
+      "nombreProducto": "Mini Torta Chocolate",
+      "precio": "1499",
+      "imagen": "https://www.estherhelados.com.ar/webfiles/estherhelados/productos/133/1_1000x1000.jpg",
+      "categoria": "Dulce",
+      "descripcion_breve": "Mini Torta Chocolate y Nuez",
+      "descripcion_amplia": "Brownie, helado de chocolate c/nuez , pionono, dulce de leche repostero y ganache de chocolate"
+    },
+    {
+      "nombreProducto": "Tostado mixto",
+      "precio": "3200",
+      "imagen": "https://images.pexels.com/photos/5586268/pexels-photo-5586268.jpeg",
+      "categoria": "Sandwich",
+      "descripcion_breve": "tostado de jamon y queso",
+      "descripcion_amplia": "tostado de jamon y queso rico ss",
+      "id": "3680"
+    }
+  ]
+}
