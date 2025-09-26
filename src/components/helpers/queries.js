@@ -11,3 +11,12 @@ export const  login = (usuario) =>{
         return false
     }
 }
+
+export const listarProductos = async () =>{
+    try{
+        const respuesta = await fetch('http://localhost:3000/productos')
+        return respuesta;
+    }catch(error){
+        console.error(error)
+    }
+}
