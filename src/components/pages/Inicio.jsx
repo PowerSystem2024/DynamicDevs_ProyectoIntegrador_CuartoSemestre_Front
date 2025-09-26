@@ -1,64 +1,46 @@
 import { Container, Row } from "react-bootstrap";
 import CardProducto from "./producto/CardProducto";
-import Tendencias from "./producto/Tendencias";
+import { useEffect, useState } from "react";
+import { listarProductos } from "../helpers/queries";
 
-// Importar imágenes
-import alfajores from "../../assets/alfajorchocolate.jpg";
-import galleta from "../../assets/galleta.jpg";
-import capuchino from "../../assets/capuchino.jpg";
 const Inicio = () => {
-  const productosInicio = [
-    {
-      imagen: alfajores,
-      titulo: "Alfajor de chocolate",
-      descripcion:
-        "Delicioso alfajor relleno de dulce de leche y bañado en chocolate.",
-      precio: 1200,
-    },
-    {
-      imagen: galleta,
-      titulo: "Galleta rellena",
-      descripcion:
-        "Crujiente por fuera y suave por dentro, con relleno artesanal.",
-      precio: 1000,
-    },
-    {
-      imagen: capuchino,
-      titulo: "Capuchino",
-      descripcion: "Espuma de leche cremosa sobre un espresso fuerte.",
-      precio: 350,
-    },
-  ];
+  const [productos, setProductos] = useState([]);
+
+  useEffect(() => {
+    obtenerProductos();
+  }, []);
+
+  const obtenerProductos = async () => {
+    const respuesta = await listarProductos();
+    if (respuesta.status === 200) {
+      const datos = await respuesta.json();
+      setProductos(datos);
+    } else {
+      alert("Error al listar los productos");
+    }
+  };
 
   return (
     <section className="mainSection">
       <img
         className="banner"
         src="https://images.pexels.com/photos/25391920/pexels-photo-25391920.jpeg"
-        alt="fondo alfajores"
+        alt="fondo cafe"
       />
-
       <Container className="mt-5">
-        <h1 className="display-4 text-underline-warning text-center">Nuestros Productos</h1>
+        <h1 className="display-4 text-underline-warning">Nuestros Productos</h1>
         <hr />
         <Row>
-          {productosInicio.map((producto, index) => (
-            <CardProducto
-              key={index}
-              imagen={producto.imagen}
-              titulo={producto.titulo}
-              descripcion={producto.descripcion}
-              precio={producto.precio}
-            />
+          {productos.map((producto) => (
+            <CardProducto key={producto.id} producto={producto} />
           ))}
         </Row>
-      </Container>
-
-      <Container>
-        <Tendencias />
       </Container>
     </section>
   );
 };
 
 export default Inicio;
+
+
+// https://images.pexels.com/photos/25391920/pexels-photo-25391920.jpeg
