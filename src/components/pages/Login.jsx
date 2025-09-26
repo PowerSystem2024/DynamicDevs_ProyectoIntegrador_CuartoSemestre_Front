@@ -18,7 +18,7 @@ const Login = ({ setUsuarioLogueado }) => {
       //Aqui el usuario ya se logueo
       Swal.fire({
         title: "¡Ingresaste con exito!",
-        text: "Bienvenido al sitio de Croissant Panaderia",
+        text: "Bienvenido al sitio de ChocoDevs Alfajores",
         icon: "success",
         draggable: true,
       });
