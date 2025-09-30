@@ -2,7 +2,7 @@
   "productos": [
     {
       "nombreProducto": "medialuna",
-      "precio": "700",
+      "precio": "500",
       "imagen": "https://images.pexels.com/photos/2135/food-france-morning-breakfast.jpg",
       "categoria": "Dulce",
       "descripcion_breve": "Medialuna con masa de hojaldre",
@@ -46,13 +46,13 @@
       "id": "3680"
     },
     {
+      "id": "4078",
       "nombreProducto": "Alfajores de chocolate blanco",
-      "precio": "3000",
+      "precio": "2500",
       "imagen": "https://cdn.pixabay.com/photo/2020/03/01/22/26/alfajor-4894324_1280.jpg",
       "categoria": "Dulce",
-      "descripcion_breve": "chocolate blanco alfajor",
-      "descripcion_amplia": "alfajor de chocolate blanco con nueces pecan y whisky",
-      "id": "c102"
+      "descripcion_breve": "alfajor de chocolate blanco",
+      "descripcion_amplia": "Alfajor de chocolate blanco con toques de escencia de limon y nueces pecan"
     }
   ]
 }
