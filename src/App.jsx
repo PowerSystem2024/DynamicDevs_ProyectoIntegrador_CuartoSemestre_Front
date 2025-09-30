@@ -6,6 +6,8 @@ import Footer from "./components/common/Footer";
 import Inicio from "./components/pages/Inicio";
 import Error404 from "./components/pages/Error404";
 import DetalleProducto from "./components/pages/DetalleProducto";
+import Tienda from "./components/pages/Tienda";
+import Carrito from "./components/pages/Carrito";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./components/pages/Login";
 import { useState } from "react";
@@ -42,6 +44,9 @@ function App() {
         />
 
         <Route exact path="/detalle/:id" element={<DetalleProducto />} />
+
+        <Route exact path="/tienda" element={<Tienda />} />
+        <Route exact path="/carrito" element={<Carrito />} />
 
         <Route path="*" element={<Error404 />} />
       </Routes>
