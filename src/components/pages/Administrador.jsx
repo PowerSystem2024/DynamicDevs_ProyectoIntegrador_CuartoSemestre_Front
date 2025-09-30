@@ -20,8 +20,10 @@ useEffect(() => {
       setProductos(datos);
     } else{
       alert('Error al listar los productos')
-    }
+    }  
   }
+   
+
   return (
     <section className="container mainSection">
       <div className="d-flex justify-content-between align-items-center mt-5">
@@ -46,7 +48,7 @@ useEffect(() => {
       <Table responsive striped bordered hover>
         <thead>
           <tr className="text-center">
-            <th>Cod</th>
+            <th className="d-none">Cod</th>
             <th>Producto</th>
             <th>Precio</th>
             <th>URL de Imagen</th>
@@ -57,7 +59,7 @@ useEffect(() => {
         <tbody>
           {
             // producto={itemProducto} es nuestro prop para itemProducto es decir producto es nuestra prop y itemProducto es el valor que le estamos pasando
-            productos.map((itemProducto)=><ItemProducto key={itemProducto.id} producto={itemProducto}></ItemProducto>)
+            productos.map((itemProducto)=><ItemProducto key={itemProducto.id} producto={itemProducto} setProductos={setProductos}></ItemProducto>)
           }
         </tbody>
       </Table>
