@@ -36,3 +36,15 @@ export const crearProducto = async (productoNuevo) => {
     console.error(error);
   }
 };
+
+//DELETE
+export const eliminarProductoAPI = async (id) => {
+  try {
+    const respuesta = await fetch("http://localhost:3000/productos/"+id,{
+        method: "DELETE"
+    });
+    return respuesta
+  } catch (error) {
+    console.error(error);
+  }
+};
