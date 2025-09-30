@@ -48,6 +48,12 @@ const Carrito = () => {
     );
   }
 
+  const handlePagar = () => {
+    alert("Redirigiendo a la pasarela de pago...");
+    // Aquí puedes hacer navigate("/pago") si tienes una ruta de pago
+    // navigate("/pago");
+  };
+
   return (
     <Container className="mt-5 mainSection">
       <h2>Carrito de Compras</h2>
@@ -115,6 +121,11 @@ const Carrito = () => {
         </tbody>
       </Table>
       <h4>Total: ${total}</h4>
+      <div className="d-flex justify-content-end mt-3">
+        <Button variant="success" size="lg" onClick={handlePagar} className="mb-2">
+          Pagar
+        </Button>
+      </div>
     </Container>
   );
 };
