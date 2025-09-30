@@ -44,6 +44,15 @@
       "descripcion_breve": "tostado de jamon y queso",
       "descripcion_amplia": "tostado de jamon y queso rico ss",
       "id": "3680"
+    },
+    {
+      "nombreProducto": "Alfajores de chocolate blanco",
+      "precio": "3000",
+      "imagen": "https://cdn.pixabay.com/photo/2020/03/01/22/26/alfajor-4894324_1280.jpg",
+      "categoria": "Dulce",
+      "descripcion_breve": "chocolate blanco alfajor",
+      "descripcion_amplia": "alfajor de chocolate blanco con nueces pecan y whisky",
+      "id": "c102"
     }
   ]
 }
