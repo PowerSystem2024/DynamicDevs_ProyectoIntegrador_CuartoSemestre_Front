@@ -1,80 +1,85 @@
-const userAdmin = {
-  email: "admin@chocodevs.com",
-  password: "123Aa123",
-};
+const URIProductos = import.meta.env.VITE_API_PRODUCTOS;
+const URL_Usuario = import.meta.env.VITE_API_USUARIO;
 
-export const login = (usuario) => {
-  if (
-    usuario.email === userAdmin.email &&
-    usuario.password === userAdmin.password
-  ) {
-    // Guardamos solo el email en localStorage
-    localStorage.setItem("usuarioChocodevs", JSON.stringify(usuario.email));
-    return true;
-  } else {
-    return false;
-  }
-};
-
-// GET
-export const listarProductos = async () => {
+//nuevo login usando el backend
+export const login = async (usuario) =>{
   try {
-    const respuesta = await fetch("http://localhost:3000/productos");
-    return respuesta;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-// GET por ID
-export const obtenerProducto = async (id) => {
-  try {
-    const respuesta = await fetch("http://localhost:3000/productos/" + id);
-    return respuesta;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-// POST
-export const crearProducto = async (productoNuevo) => {
-  try {
-    const respuesta = await fetch("http://localhost:3000/productos", {
+    const respuesta = await fetch(URL_Usuario, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(productoNuevo),
+      body: JSON.stringify(usuario),
     });
+    return  respuesta
+  } catch (error) {
+    console.error(error);
+    return { error: "Error en el login" };
+  }
+}
+
+//GET
+export const listarProductos = async () => {
+  try {
+    const respuesta = await fetch(URIProductos);
+    return respuesta;
+  } catch (error) {
+    console.error(error);
+  }
+};
+//GET
+export const obtenerProducto = async (id) => {
+  try {
+    const respuesta = await fetch(URIProductos+id);
     return respuesta;
   } catch (error) {
     console.error(error);
   }
 };
 
-// DELETE
+//POST
+export const crearProducto = async (productoNuevo) => {
+  try {
+    const respuesta = await fetch(URIProductos,{
+        method: "POST",
+        headers:{
+            "Content-Type":"application/json",
+            "x-token": JSON.parse(sessionStorage.getItem('usuarioChocodevs')).token
+        },
+        body: JSON.stringify(productoNuevo)
+    });
+    return respuesta
+  } catch (error) {
+    console.error(error);
+  }
+};
+//DELETE
 export const eliminarProductoAPI = async (id) => {
   try {
-    const respuesta = await fetch("http://localhost:3000/productos/" + id, {
-      method: "DELETE",
+    const respuesta = await fetch(URIProductos+id,{
+        method: "DELETE",
+        headers:{
+          "x-token": JSON.parse(sessionStorage.getItem('usuarioChocodevs')).token
+        }
     });
-    return respuesta;
+    return respuesta
   } catch (error) {
     console.error(error);
   }
 };
 
-// PUT
+//PUT, PATCH
 export const editarProducto = async (productoActualizado, id) => {
   try {
-    const respuesta = await fetch("http://localhost:3000/productos/" + id, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(productoActualizado),
+    const respuesta = await fetch(URIProductos+id,{
+        method: "PUT",
+        headers:{
+            "Content-Type":"application/json",
+            "x-token": JSON.parse(sessionStorage.getItem('usuarioChocodevs')).token
+        },
+        body: JSON.stringify(productoActualizado)
     });
-    return respuesta;
+    return respuesta
   } catch (error) {
     console.error(error);
   }
