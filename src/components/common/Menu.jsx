@@ -8,7 +8,7 @@ const Menu = ({ usuarioLogueado, setUsuarioLogueado }) => {
 
   const logout = () => {
     // Resetear el state
-    sessionStorage.removeItem('usuarioCroissant');
+    sessionStorage.removeItem('usuarioChocodevs');
     // Actualizamos el estado
     setUsuarioLogueado('');
     // Redireccionamos al inicio
@@ -59,7 +59,7 @@ const Menu = ({ usuarioLogueado, setUsuarioLogueado }) => {
             </NavLink>
 
             {
-              usuarioLogueado.length > 0 ? (
+              usuarioLogueado.email ? (
                 <>
                   <NavLink 
                     end 
