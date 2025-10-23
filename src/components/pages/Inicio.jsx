@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { Container, Row } from "react-bootstrap";
 import CardProducto from "./producto/CardProducto";
 import { listarProductos } from "../helpers/queries";
-import chocodevsworking from "../../assets/chocodevsworking.jpg"; // ✅ Import correcto de la imagen
-
+import chocodevsworking from "../../assets/chocodevsworking.jpg";
 const Inicio = () => {
   const [productos, setProductos] = useState([]);
 

@@ -2,7 +2,7 @@ const URIProductos = import.meta.env.VITE_API_PRODUCTOS;
 const URL_Usuario = import.meta.env.VITE_API_USUARIO;
 
 //nuevo login usando el backend
-export const login = async (usuario) =>{
+export const login = async (usuario) => {
   try {
     const respuesta = await fetch(URL_Usuario, {
       method: "POST",
@@ -11,12 +11,12 @@ export const login = async (usuario) =>{
       },
       body: JSON.stringify(usuario),
     });
-    return  respuesta
+    return respuesta;
   } catch (error) {
     console.error(error);
     return { error: "Error en el login" };
   }
-}
+};
 
 //GET
 export const listarProductos = async () => {
@@ -30,7 +30,7 @@ export const listarProductos = async () => {
 //GET
 export const obtenerProducto = async (id) => {
   try {
-    const respuesta = await fetch(URIProductos+id);
+    const respuesta = await fetch(URIProductos + id);
     return respuesta;
   } catch (error) {
     console.error(error);
@@ -40,15 +40,15 @@ export const obtenerProducto = async (id) => {
 //POST
 export const crearProducto = async (productoNuevo) => {
   try {
-    const respuesta = await fetch(URIProductos,{
-        method: "POST",
-        headers:{
-            "Content-Type":"application/json",
-            "x-token": JSON.parse(sessionStorage.getItem('usuarioChocodevs')).token
-        },
-        body: JSON.stringify(productoNuevo)
+    const respuesta = await fetch(URIProductos, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-token": JSON.parse(sessionStorage.getItem("usuarioChocodevs")).token,
+      },
+      body: JSON.stringify(productoNuevo),
     });
-    return respuesta
+    return respuesta;
   } catch (error) {
     console.error(error);
   }
@@ -56,13 +56,13 @@ export const crearProducto = async (productoNuevo) => {
 //DELETE
 export const eliminarProductoAPI = async (id) => {
   try {
-    const respuesta = await fetch(URIProductos+id,{
-        method: "DELETE",
-        headers:{
-          "x-token": JSON.parse(sessionStorage.getItem('usuarioChocodevs')).token
-        }
+    const respuesta = await fetch(URIProductos + id, {
+      method: "DELETE",
+      headers: {
+        "x-token": JSON.parse(sessionStorage.getItem("usuarioChocodevs")).token,
+      },
     });
-    return respuesta
+    return respuesta;
   } catch (error) {
     console.error(error);
   }
@@ -71,15 +71,15 @@ export const eliminarProductoAPI = async (id) => {
 //PUT, PATCH
 export const editarProducto = async (productoActualizado, id) => {
   try {
-    const respuesta = await fetch(URIProductos+id,{
-        method: "PUT",
-        headers:{
-            "Content-Type":"application/json",
-            "x-token": JSON.parse(sessionStorage.getItem('usuarioChocodevs')).token
-        },
-        body: JSON.stringify(productoActualizado)
+    const respuesta = await fetch(URIProductos + id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "x-token": JSON.parse(sessionStorage.getItem("usuarioChocodevs")).token,
+      },
+      body: JSON.stringify(productoActualizado),
     });
-    return respuesta
+    return respuesta;
   } catch (error) {
     console.error(error);
   }

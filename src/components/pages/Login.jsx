@@ -12,7 +12,7 @@ const Login = ({ setUsuarioLogueado }) => {
     formState: { errors },
   } = useForm();
 
-const onSubmit = async (usuario) => {
+  const onSubmit = async (usuario) => {
     try {
       const respuesta = await login(usuario);
 
@@ -21,13 +21,11 @@ const onSubmit = async (usuario) => {
         // Obtener los datos del backend
         const datos = await respuesta.json();
 
-
         // Guardar en sessionStorage
         sessionStorage.setItem(
           "usuarioChocodevs",
           JSON.stringify({ email: datos.email, token: datos.token })
         );
-
 
         // Actualizar el state
         setUsuarioLogueado(datos);
@@ -40,7 +38,6 @@ const onSubmit = async (usuario) => {
           "Has iniciado sesión correctamente",
           "success"
         );
-
       } else {
         Swal.fire(
           "Ocurrió un error",
@@ -86,9 +83,7 @@ const onSubmit = async (usuario) => {
               },
             })}
           />
-          <Form.Text className="text-danger">
-            {errors.email?.message}
-          </Form.Text>
+          <Form.Text className="text-danger">{errors.email?.message}</Form.Text>
         </Form.Group>
 
         {/* Campo PASSWORD */}

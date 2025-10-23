@@ -5,11 +5,7 @@ import Administrador from "../pages/Administrador";
 const ListaRutasAdmin = () => {
   return (
     <Routes>
-      <Route
-        exact
-        path="/"
-        element={<Administrador></Administrador>}
-      ></Route>
+      <Route exact path="/" element={<Administrador></Administrador>}></Route>
       <Route
         exact
         path="/crear"

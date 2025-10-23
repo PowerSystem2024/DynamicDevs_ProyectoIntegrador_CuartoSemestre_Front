@@ -60,7 +60,9 @@ const Tienda = () => {
 
       {/* Mostrar título solo cuando haya productos */}
       {!cargando && productos.length > 0 && (
-        <h2 className="text-center mb-4 text-underline-warning">Nuestros Productos disponibles</h2>
+        <h2 className="text-center mb-4 text-underline-warning">
+          Nuestros Productos disponibles
+        </h2>
       )}
 
       {/* Sección cuando no hay productos o está cargando */}
@@ -79,7 +81,6 @@ const Tienda = () => {
             className="img-cargando mt-4 mb-4"
           />
 
-         
           <div>
             <Link className="btn btn-warning btn-lg buttonError" to="/">
               Volver al inicio

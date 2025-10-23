@@ -8,16 +8,16 @@ const Menu = ({ usuarioLogueado, setUsuarioLogueado }) => {
 
   const logout = () => {
     // Resetear el state
-    sessionStorage.removeItem('usuarioChocodevs');
+    sessionStorage.removeItem("usuarioChocodevs");
     // Actualizamos el estado
-    setUsuarioLogueado('');
+    setUsuarioLogueado("");
     // Redireccionamos al inicio
-    navegacion('/');
-  }
+    navegacion("/");
+  };
 
   return (
-    <Navbar 
-      expand="lg" 
+    <Navbar
+      expand="lg"
       className="bg-body-tertiary shadow-sm border-bottom border-warning"
     >
       <Container>
@@ -26,75 +26,68 @@ const Menu = ({ usuarioLogueado, setUsuarioLogueado }) => {
             src={logo}
             alt="logo Rolling Coffee"
             className="img-fluid"
-            width={150} 
+            width={150}
           />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto align-items-center"> 
-            
-            <NavLink 
-              end 
-              className="nav-link fw-bold fs-5 mx-2"
-              to="/"
-            >
+          <Nav className="ms-auto align-items-center">
+            <NavLink end className="nav-link fw-bold fs-5 mx-2" to="/">
               Inicio
             </NavLink>
 
             {/* Enlaces fijos para todos */}
-            <NavLink 
-              end 
+            <NavLink
+              end
               className="nav-link fw-bold fs-5 mx-2 d-flex align-items-center"
               to="/tienda"
             >
               <BiStore className="me-1" /> Tienda
             </NavLink>
 
-            <NavLink 
-              end 
+            <NavLink
+              end
               className="nav-link fw-bold fs-5 mx-2 d-flex align-items-center"
               to="/carrito"
             >
               <BiCart className="me-1" /> Carrito
             </NavLink>
 
-            {
-              usuarioLogueado.email ? (
-                <>
-                  <NavLink 
-                    end 
-                    className="nav-link fw-bold fs-5 mx-2"
-                    to="/administrador"
-                  >
-                    Administrador
-                  </NavLink>
-                  <Button 
-                    variant="link" 
-                    className="nav-link fw-bold fs-5 mx-2 text-danger"
-                    onClick={logout}
-                  >
-                    Cerrar Sesión
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <NavLink 
-                    end 
-                    className="nav-link fw-bold fs-5 mx-2 text-success"
-                    to="/login"
-                  >
-                    Iniciar Sesíon
-                  </NavLink>
-                  <NavLink 
-                    end 
-                    className="nav-link fw-bold fs-5 mx-2"
-                    to="/registro"
-                  >
-                    Registro
-                  </NavLink>
-                </>
-              )
-            }
+            {usuarioLogueado.email ? (
+              <>
+                <NavLink
+                  end
+                  className="nav-link fw-bold fs-5 mx-2"
+                  to="/administrador"
+                >
+                  Administrador
+                </NavLink>
+                <Button
+                  variant="link"
+                  className="nav-link fw-bold fs-5 mx-2 text-danger"
+                  onClick={logout}
+                >
+                  Cerrar Sesión
+                </Button>
+              </>
+            ) : (
+              <>
+                <NavLink
+                  end
+                  className="nav-link fw-bold fs-5 mx-2 text-success"
+                  to="/login"
+                >
+                  Iniciar Sesíon
+                </NavLink>
+                <NavLink
+                  end
+                  className="nav-link fw-bold fs-5 mx-2"
+                  to="/registro"
+                >
+                  Registro
+                </NavLink>
+              </>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

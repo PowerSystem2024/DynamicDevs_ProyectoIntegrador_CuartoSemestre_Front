@@ -1,9 +1,9 @@
 const Footer = () => {
-    return (
-        <footer className="text-center bgfooter text-light py-4">
-            <p className="h5">&copy; ChocoDevs: Todos los derechos reservados</p>
-        </footer>
-    );
+  return (
+    <footer className="text-center bgfooter text-light py-4">
+      <p className="h5">&copy; ChocoDevs: Todos los derechos reservados</p>
+    </footer>
+  );
 };
 
 export default Footer;

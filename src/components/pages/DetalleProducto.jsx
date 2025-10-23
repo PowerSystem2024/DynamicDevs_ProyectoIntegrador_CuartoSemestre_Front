@@ -34,22 +34,26 @@ const DetalleProducto = () => {
           </Col>
           <Col md={6}>
             <Card.Body>
-              <Card.Title className="primary-font">{producto.nombreProducto}</Card.Title>
+              <Card.Title className="primary-font">
+                {producto.nombreProducto}
+              </Card.Title>
               <Card.Text>
                 {producto.descripcion_amplia}
                 <br />
                 <br />
-                <span className="primary-font fw-semibold">Categoría:</span>{" "}
+                <span className="primary-font fw-semibold">
+                  Categoría:
+                </span>{" "}
                 {producto.categoria}
                 <br />
-                <span className="primary-font fw-semibold">Precio:</span> ${producto.precio}
+                <span className="primary-font fw-semibold">Precio:</span> $
+                {producto.precio}
               </Card.Text>
             </Card.Body>
           </Col>
         </Row>
       </Card>
 
-      
       <div className="text-center mt-4">
         <Link to="/">
           <Button variant="warning mt-3">Volver al inicio</Button>

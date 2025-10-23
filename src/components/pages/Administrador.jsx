@@ -6,23 +6,22 @@ import { useEffect, useState } from "react";
 import { listarProductos } from "../helpers/queries";
 
 const Administrador = () => {
-const [productos, setProductos] = useState([]);
+  const [productos, setProductos] = useState([]);
 
-useEffect(() => {
-  obtenerProductos();
-}, []);
+  useEffect(() => {
+    obtenerProductos();
+  }, []);
 
-  const obtenerProductos = async() =>{
-    const respuesta = await listarProductos()
-    if(respuesta.status === 200){
+  const obtenerProductos = async () => {
+    const respuesta = await listarProductos();
+    if (respuesta.status === 200) {
       //guardamos los productos en el state
       const datos = await respuesta.json();
       setProductos(datos);
-    } else{
-      alert('Error al listar los productos')
-    }  
-  }
-   
+    } else {
+      alert("Error al listar los productos");
+    }
+  };
 
   return (
     <section className="container mainSection">
@@ -59,7 +58,13 @@ useEffect(() => {
         <tbody>
           {
             // producto={itemProducto} es nuestro prop para itemProducto es decir producto es nuestra prop y itemProducto es el valor que le estamos pasando
-            productos.map((itemProducto)=><ItemProducto key={itemProducto._id} producto={itemProducto} setProductos={setProductos}></ItemProducto>)
+            productos.map((itemProducto) => (
+              <ItemProducto
+                key={itemProducto._id}
+                producto={itemProducto}
+                setProductos={setProductos}
+              ></ItemProducto>
+            ))
           }
         </tbody>
       </Table>

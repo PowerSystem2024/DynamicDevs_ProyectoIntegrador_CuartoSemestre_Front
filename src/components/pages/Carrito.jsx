@@ -9,7 +9,6 @@ import {
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-
 const Carrito = () => {
   const [carrito, setCarrito] = useState([]);
   const navigate = useNavigate();
@@ -124,7 +123,12 @@ const Carrito = () => {
       </Table>
       <h4>Total: ${total}</h4>
       <div className="d-flex justify-content-end mt-3">
-        <Button variant="success" size="lg" onClick={handlePagar} className="mb-2">
+        <Button
+          variant="success"
+          size="lg"
+          onClick={handlePagar}
+          className="mb-2"
+        >
           Pagar
         </Button>
       </div>
