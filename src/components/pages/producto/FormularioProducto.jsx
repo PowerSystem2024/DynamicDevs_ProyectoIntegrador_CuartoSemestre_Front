@@ -46,7 +46,7 @@ const FormularioProducto = ({ creando }) => {
   };
 
   const productoValidado = async (producto) => {
-    console.log(producto);
+    
     if (creando) {
       // Crear un producto
       const respuesta = await crearProducto(producto);
