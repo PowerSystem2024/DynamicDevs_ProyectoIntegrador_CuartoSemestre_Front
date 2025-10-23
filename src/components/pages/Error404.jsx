@@ -14,7 +14,7 @@ const Error404 = () => {
 
         {/* Título divertido */}
         <h2 className=" fw-bold titulo-error mt-3">
-          ¡Hola! Te encontraste con Señor Bugscuit 🍪, parece que te equivocaste de ruta
+          ¡Hola! Te encontraste con Señor Bugscuit 🍪, parece que te equivocaste de ruta.
         </h2>
 
         {/* Imagen del error */}
