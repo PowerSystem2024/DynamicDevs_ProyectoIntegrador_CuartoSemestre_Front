@@ -6,11 +6,17 @@ import {
   OverlayTrigger,
   Table,
   Tooltip,
+  Spinner,
+  Modal,
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { crearPreferenciaPago } from "../helpers/queries";
+import Swal from "sweetalert2";
 
 const Carrito = () => {
   const [carrito, setCarrito] = useState([]);
+  const [cargando, setCargando] = useState(false);
+  const [mostrarModal, setMostrarModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,19 +47,114 @@ const Carrito = () => {
       ? carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0)
       : 0;
 
+  const handlePagar = async () => {
+    setCargando(true);
+
+    try {
+      // Preparar los productos para el backend
+      const productosParaPago = carrito.map((item) => ({
+        id: item._id,
+        cantidad: item.cantidad,
+      }));
+
+      console.log('Productos a enviar:', productosParaPago);
+
+      // Crear la preferencia de pago SIN usuario (compra como invitado)
+      const respuesta = await crearPreferenciaPago(productosParaPago, null);
+
+      console.log('Respuesta del servidor:', respuesta);
+
+      if (respuesta.ok) {
+        const datos = await respuesta.json();
+        console.log('Datos recibidos:', datos);
+
+        // Guardar el pedidoId en localStorage
+        localStorage.setItem("ultimoPedidoId", datos.pedidoId);
+
+        // Abrir el modal con Checkout Bricks
+        setMostrarModal(true);
+        
+        // Inicializar el Checkout Brick de Mercado Pago
+        inicializarCheckoutBrick(datos.preferenceId);
+      } else {
+        const error = await respuesta.json();
+        console.error('Error del backend:', error);
+        Swal.fire({
+          icon: "error",
+          title: "Error al procesar el pago",
+          text: error.mensaje || error.error || "No se pudo crear la preferencia de pago",
+        });
+      }
+    } catch (error) {
+      console.error("Error completo:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "OcurriÛ un error al procesar tu solicitud. Intenta nuevamente.",
+      });
+    } finally {
+      setCargando(false);
+    }
+  };
+
+  const inicializarCheckoutBrick = async (preferenceId) => {
+    try {
+      // Obtener la Public Key desde las variables de entorno
+      const publicKey = import.meta.env.VITE_MP_PUBLIC_KEY || 'TEST-2d96dcda-9c5c-4f2b-9837-40aaaf943ef9';
+      
+      console.log('Inicializando MP con Public Key:', publicKey);
+      console.log('Preference ID:', preferenceId);
+
+      // Inicializar MercadoPago
+      const mp = new window.MercadoPago(publicKey, {
+        locale: 'es-AR'
+      });
+
+      // Crear el Checkout Brick
+      const bricksBuilder = mp.bricks();
+
+      await bricksBuilder.create('wallet', 'wallet_container', {
+        initialization: {
+          preferenceId: preferenceId,
+        },
+        customization: {
+          texts: {
+            valueProp: 'smart_option',
+          },
+        },
+      });
+
+      console.log('Checkout Brick creado exitosamente');
+    } catch (error) {
+      console.error('Error al inicializar Checkout Brick:', error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo cargar el checkout de Mercado Pago",
+      });
+      setMostrarModal(false);
+    }
+  };
+
+  const cerrarModal = () => {
+    setMostrarModal(false);
+    // Limpiar el contenedor del brick
+    const container = document.getElementById('wallet_container');
+    if (container) {
+      container.innerHTML = '';
+    }
+  };
+
   if (carrito.length === 0) {
     return (
       <Container className="mt-5 mainSection">
-        <h3>El carrito est√° vac√≠o. Agrega productos desde la tienda.</h3>
+        <h3>El carrito est· vacÌo. Agrega productos desde la tienda.</h3>
+        <Button variant="primary" onClick={() => navigate("/")}>
+          Ver Productos
+        </Button>
       </Container>
     );
   }
-
-  const handlePagar = () => {
-    alert("Redirigiendo a la pasarela de pago...");
-    // Aqu√≠ puedes hacer navigate("/pago") si tienes una ruta de pago
-    // navigate("/pago");
-  };
 
   return (
     <Container className="mt-5 mainSection">
@@ -96,6 +197,7 @@ const Carrito = () => {
                     variant="success"
                     size="sm"
                     onClick={() => incrementarCantidad(item._id)}
+                    disabled={cargando}
                   >
                     +
                   </Button>
@@ -112,6 +214,7 @@ const Carrito = () => {
                     variant="danger"
                     size="sm"
                     onClick={() => disminuirCantidad(item._id)}
+                    disabled={cargando}
                   >
                     -
                   </Button>
@@ -124,14 +227,58 @@ const Carrito = () => {
       <h4>Total: ${total}</h4>
       <div className="d-flex justify-content-end mt-3">
         <Button
-          variant="success"
           size="lg"
           onClick={handlePagar}
           className="mb-2"
+          disabled={cargando}
+          style={{
+            backgroundColor: "#009ee3",
+            border: "none",
+            color: "white",
+            fontWeight: "600",
+            padding: "12px 24px",
+            borderRadius: "6px",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px"
+          }}
         >
-          Pagar
+          {cargando ? (
+            <>
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />{" "}
+              Procesando...
+            </>
+          ) : (
+            <>
+              <svg width="20" height="20" viewBox="0 0 100 100" fill="white">
+                <path d="M70 10H30c-11 0-20 9-20 20v40c0 11 9 20 20 20h40c11 0 20-9 20-20V30c0-11-9-20-20-20zm-5 50H35c-2.8 0-5-2.2-5-5s2.2-5 5-5h30c2.8 0 5 2.2 5 5s-2.2 5-5 5zm0-20H35c-2.8 0-5-2.2-5-5s2.2-5 5-5h30c2.8 0 5 2.2 5 5s-2.2 5-5 5z"/>
+              </svg>
+              Pagar con Mercado Pago
+            </>
+          )}
         </Button>
       </div>
+
+      {/* Modal de Checkout */}
+      <Modal 
+        show={mostrarModal} 
+        onHide={cerrarModal}
+        size="lg"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Completar Pago</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div id="wallet_container"></div>
+        </Modal.Body>
+      </Modal>
     </Container>
   );
 };

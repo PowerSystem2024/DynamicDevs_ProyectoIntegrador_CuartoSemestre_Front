@@ -23,7 +23,7 @@ const Login = ({ setUsuarioLogueado }) => {
 
         // Guardar en sessionStorage
         sessionStorage.setItem(
-          "usuarioChocodevs",
+          "l",
           JSON.stringify({ email: datos.email, token: datos.token })
         );
 
