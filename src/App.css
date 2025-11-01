@@ -259,3 +259,102 @@
   0% { opacity: 0; transform: translateY(-15px); }
   100% { opacity: 1; transform: translateY(0); }
 }
+
+/* ===== Efecto hover para el logo de Mercado Pago ===== */
+.mp-logo-btn {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+  padding: 2px;
+  border-radius: 80%;
+}
+
+/* ===== Botón de Mercado Pago - Diseño Profesional ===== */
+.btn-mercadopago-custom {
+  background: linear-gradient(135deg, #009ee3 0%, #0083c7 100%) !important;
+  border: 2px solid transparent !important;
+  color: white !important;
+  font-weight: 600 !important;
+  padding: 14px 28px !important;
+  border-radius: 10px !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 15px rgba(0, 158, 227, 0.4), 
+              0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  font-size: 16px !important;
+  letter-spacing: 0.3px;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  justify-content: center !important;
+}
+
+/* Efecto de brillo animado */
+.btn-mercadopago-custom::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.btn-mercadopago-custom:hover::before {
+  left: 100%;
+}
+
+/* Hover principal */
+.btn-mercadopago-custom:hover:not(:disabled) {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%) !important;
+  color: #009ee3 !important;
+  border: 2px solid #009ee3 !important;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 158, 227, 0.5), 
+              0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Cambio del logo en hover - mantener visible */
+.btn-mercadopago-custom:hover:not(:disabled) .mp-logo-btn {
+  transform: scale(1.1);
+  background: #009ee3;
+  padding: 3px;
+}
+
+/* Efecto al hacer clic */
+.btn-mercadopago-custom:active:not(:disabled) {
+  transform: translateY(-1px) scale(0.98);
+  box-shadow: 0 4px 15px rgba(0, 158, 227, 0.4), 
+              0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.1s ease;
+}
+
+/* Estado deshabilitado */
+.btn-mercadopago-custom:disabled {
+  background: linear-gradient(135deg, #cccccc 0%, #b3b3b3 100%) !important;
+  opacity: 0.6;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* Animación de pulso sutil para llamar la atención */
+@keyframes pulse-mp {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(0, 158, 227, 0.4), 
+                0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(0, 158, 227, 0.6), 
+                0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.btn-mercadopago-custom:not(:disabled) {
+  animation: pulse-mp 3s ease-in-out infinite;
+}
+
+.btn-mercadopago-custom:hover:not(:disabled) {
+  animation: none;
+}

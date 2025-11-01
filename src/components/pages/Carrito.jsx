@@ -12,6 +12,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { crearPreferenciaPago } from "../helpers/queries";
 import Swal from "sweetalert2";
+import botonPago from "../../assets/botonPago.jpeg";
 
 const Carrito = () => {
   const [carrito, setCarrito] = useState([]);
@@ -90,7 +91,7 @@ const Carrito = () => {
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: "OcurriÛ un error al procesar tu solicitud. Intenta nuevamente.",
+        text: "OcurriÔøΩ un error al procesar tu solicitud. Intenta nuevamente.",
       });
     } finally {
       setCargando(false);
@@ -148,7 +149,7 @@ const Carrito = () => {
   if (carrito.length === 0) {
     return (
       <Container className="mt-5 mainSection">
-        <h3>El carrito est· vacÌo. Agrega productos desde la tienda.</h3>
+        <h3>El carrito est√° vac√≠o. Agrega productos desde la tienda.</h3>
         <Button variant="primary" onClick={() => navigate("/")}>
           Ver Productos
         </Button>
@@ -229,19 +230,8 @@ const Carrito = () => {
         <Button
           size="lg"
           onClick={handlePagar}
-          className="mb-2"
+          className="mb-2 btn-mercadopago-custom"
           disabled={cargando}
-          style={{
-            backgroundColor: "#009ee3",
-            border: "none",
-            color: "white",
-            fontWeight: "600",
-            padding: "12px 24px",
-            borderRadius: "6px",
-            display: "flex",
-            alignItems: "center",
-            gap: "8px"
-          }}
         >
           {cargando ? (
             <>
@@ -256,9 +246,17 @@ const Carrito = () => {
             </>
           ) : (
             <>
-              <svg width="20" height="20" viewBox="0 0 100 100" fill="white">
-                <path d="M70 10H30c-11 0-20 9-20 20v40c0 11 9 20 20 20h40c11 0 20-9 20-20V30c0-11-9-20-20-20zm-5 50H35c-2.8 0-5-2.2-5-5s2.2-5 5-5h30c2.8 0 5 2.2 5 5s-2.2 5-5 5zm0-20H35c-2.8 0-5-2.2-5-5s2.2-5 5-5h30c2.8 0 5 2.2 5 5s-2.2 5-5 5z"/>
-              </svg>
+              <img 
+                src={botonPago}
+                alt="Mercado Pago"
+                className="mp-logo-btn"
+                style={{
+                  width: "32px",
+                  height: "32px",
+                  objectFit: "contain",
+                  borderRadius: "80%"
+                }}
+              />
               Pagar con Mercado Pago
             </>
           )}
