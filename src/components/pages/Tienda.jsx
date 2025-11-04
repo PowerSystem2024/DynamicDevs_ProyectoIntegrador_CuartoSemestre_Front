@@ -67,7 +67,7 @@ const Tienda = () => {
 
       {/* Sección cuando no hay productos o está cargando */}
       {cargando || productos.length === 0 ? (
-        <div className="mensaje-container  d-flex flex-column justify-content-center align-items-center ">
+        <div className="mensaje-container d-flex flex-column justify-content-center align-items-center ">
           <h3 className="fw-bold mensaje-carga pequeño-texto">
             Estamos trabajando cargando los productos. Apenas estén cargados se
             podrán ver en esta página.
@@ -91,24 +91,31 @@ const Tienda = () => {
         <Row className="mt-3 g-4">
           {productos.map((producto) => (
             <Col key={producto._id} xs={12} md={6} lg={4}>
-              <Card className="h-100">
+              {/* Card con altura fija (h-100) */}
+              <Card className="h-100"> 
                 <Card.Img
                   variant="top"
                   src={producto.imagen}
                   style={{ height: "200px", objectFit: "cover" }}
                 />
-                <Card.Body>
+                <Card.Body className="d-flex flex-column"> 
                   <Card.Title>{producto.nombreProducto}</Card.Title>
+                  
+                  {/* Contenido que varía de altura (descripción) */}
                   <Card.Text>{producto.descripcion_breve}</Card.Text>
-                  <Card.Text>
-                    <strong>Precio: </strong>${producto.precio}
-                  </Card.Text>
-                  <Button
-                    variant="warning"
-                    onClick={() => agregarAlCarrito(producto)}
-                  >
-                    Agregar al carrito
-                  </Button>
+                  
+                  {/* Contenedor para Precio y Botón, se expande para empujar el Footer hacia abajo */}
+                  <div className="mt-auto"> 
+                    <Card.Text>
+                      <strong>Precio: </strong>${producto.precio}
+                    </Card.Text>
+                    <Button
+                      variant="warning"
+                      onClick={() => agregarAlCarrito(producto)}
+                    >
+                      Agregar al carrito
+                    </Button>
+                  </div>
                 </Card.Body>
               </Card>
             </Col>
