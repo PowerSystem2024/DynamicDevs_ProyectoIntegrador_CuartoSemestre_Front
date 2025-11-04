@@ -239,10 +239,8 @@ npm run build
 
 ## 🙌 Agradecimientos
 
-Agradecemos a la **Universidad Tecnológica Nacional Mendoza San Rafael – FRSR** por el acompañamiento académico, y a los docentes que guiaron este proyecto integrador.
-En mencion especial al docente Ariel Betancud.
-
-
+Agradecemos a la **Universidad Tecnológica Nacional Mendoza – FRSR** por el constante acompañamiento académico y por brindar los recursos necesarios para el desarrollo de este proyecto integrador.  
+Queremos reconocer especialmente al **docente Ariel Betancud** por su guía, apoyo y valiosas sugerencias durante todo el proceso.
 
 
 
