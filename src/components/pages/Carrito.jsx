@@ -8,28 +8,32 @@ import {
   Modal,
 } from "react-bootstrap";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
+import CheckoutDatosRetiro from "./chequeo/ChequeoDatosRetiro";
 import "../../App.css";
+
 const URI_Pagos = import.meta.env.VITE_API_PAGOS;
+
 const Carrito = () => {
   // Inicializar Mercado Pago
   initMercadoPago("APP_USR-6eb5df9d-a8ac-44be-a4fa-81f834cf43be");
-  
+
   // Estados
   const [carrito, setCarrito] = useState([]);
   const [preferenceId, setPreferenceId] = useState(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [errorModal, setErrorModal] = useState({ show: false, message: "" });
 
-  // Cargar carrito desde localStorage al iniciar
+  // ⭐ AGREGADO → Manejo de pasos
+  const [paso, setPaso] = useState(1);
+  const [datosRetiro, setDatosRetiro] = useState(null);
+
+  // Cargar carrito desde localStorage
   useEffect(() => {
     const carritoGuardado = JSON.parse(localStorage.getItem("carrito")) || [];
     setCarrito(carritoGuardado);
   }, []);
 
-  // ❌ ELIMINADO: Ya NO creamos preferencia automáticamente
-  // La creamos solo cuando el usuario elige "Mercado Pago"
-
-  // Incrementar o disminuir cantidad de productos
+  // Incrementar cantidad
   const incrementarCantidad = (id) => {
     const nuevoCarrito = carrito.map((item) =>
       item._id === id ? { ...item, cantidad: item.cantidad + 1 } : item
@@ -38,16 +42,19 @@ const Carrito = () => {
     localStorage.setItem("carrito", JSON.stringify(nuevoCarrito));
   };
 
+  // Disminuir cantidad
   const disminuirCantidad = (id) => {
     const nuevoCarrito = carrito
       .map((item) =>
         item._id === id ? { ...item, cantidad: item.cantidad - 1 } : item
       )
       .filter((item) => item.cantidad > 0);
+
     setCarrito(nuevoCarrito);
     localStorage.setItem("carrito", JSON.stringify(nuevoCarrito));
   };
 
+  // Calcular total
   const total =
     carrito.length > 0
       ? carrito.reduce(
@@ -63,26 +70,32 @@ const Carrito = () => {
   // -------------------- PAGO EN EFECTIVO --------------------
   const handlePagarEfectivo = async () => {
     setShowPaymentModal(false);
-    
+
     try {
       const response = await fetch(`${URI_Pagos}pedido-efectivo`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items: carrito, total }),
+        body: JSON.stringify({
+          items: carrito,
+          total,
+          nombreRetira: datosRetiro.nombre,
+          fechaRetira: datosRetiro.fecha,
+          horaRetira: datosRetiro.horario
+        }),
       });
 
       const data = await response.json();
 
       if (response.ok && data.orderId) {
-        // Limpiar carrito
         localStorage.removeItem("carrito");
         setCarrito([]);
-        
-        // Mostrar mensaje de éxito
-        alert("✅ ¡Tu pedido fue registrado!\n\nPuedes pasarlo a buscar en los siguientes horarios:\n📅 Lunes a Sábados\n🕐 8:00 AM - 8:00 PM\n\n¡Te esperamos!");
-        
-        // Opcional: redirigir a página de confirmación
-        // window.location.href = `/order-confirmation/${data.orderId}?method=efectivo`;
+
+        alert(
+          "✅ ¡Tu pedido fue registrado!\n\n" +
+            "Puedes pasarlo a buscar en los siguientes horarios:\n" +
+            "📅 Lunes a Sábados\n" +
+            "🕐 8:00 AM - 8:00 PM\n\n¡Te esperamos!"
+        );
       } else {
         handleError(
           `Error al registrar la orden: ${data.mensaje || "Intente de nuevo."}`
@@ -95,23 +108,25 @@ const Carrito = () => {
   };
 
   // -------------------- PAGO CON MERCADO PAGO --------------------
+ 
   const handlePagarMercadoPago = async () => {
     try {
-      const response = await fetch(
-        `${URI_Pagos}create-preference`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ items: carrito }),
-        }
-      );
+      const response = await fetch(`${URI_Pagos}create-preference`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+        items: carrito,
+        nombreRetira: datosRetiro.nombre,
+        fechaRetira: datosRetiro.fecha,
+        horaRetira: datosRetiro.horario,
+        }),
+      });
 
       const data = await response.json();
 
       if (response.ok && data.preferenceId) {
         console.log("✅ Preferencia creada:", data.preferenceId);
         setPreferenceId(data.preferenceId);
-        // NO cerrar el modal - el Wallet se mostrará dentro
       } else {
         console.error("Error del Backend/MP:", data.message);
         handleError("Error al iniciar el pago con Mercado Pago.");
@@ -124,6 +139,7 @@ const Carrito = () => {
     }
   };
 
+  // Si carrito vacío
   if (carrito.length === 0) {
     return (
       <Container className="mt-5 mainSection">
@@ -135,10 +151,7 @@ const Carrito = () => {
   return (
     <Container className="mt-5 mainSection">
       <h2 className="text-underline-warning">Carrito de Compras</h2>
-      
-      {/* 💥 ÚNICA CORRECCIÓN: Se añade la prop 'responsive' al componente Table. 
-          Esto obliga a la tabla a tener scroll horizontal en pantallas pequeñas, 
-          evitando que rompa el layout del menú y footer. */}
+
       <Table striped bordered hover className="mt-3" responsive>
         <thead>
           <tr>
@@ -167,7 +180,11 @@ const Carrito = () => {
               <td>
                 <OverlayTrigger
                   placement="top"
-                  overlay={<Tooltip id={`tooltip-sumar-${item._id}`}>Sumar unidad</Tooltip>}
+                  overlay={
+                    <Tooltip id={`tooltip-sumar-${item._id}`}>
+                      Sumar unidad
+                    </Tooltip>
+                  }
                 >
                   <Button
                     variant="success"
@@ -179,7 +196,11 @@ const Carrito = () => {
                 </OverlayTrigger>{" "}
                 <OverlayTrigger
                   placement="top"
-                  overlay={<Tooltip id={`tooltip-restar-${item._id}`}>Restar unidad</Tooltip>}
+                  overlay={
+                    <Tooltip id={`tooltip-restar-${item._id}`}>
+                      Restar unidad
+                    </Tooltip>
+                  }
                 >
                   <Button
                     variant="danger"
@@ -197,7 +218,6 @@ const Carrito = () => {
 
       <h4>Total: ${total}</h4>
 
-      {/* ✅ SIEMPRE mostrar botón "Proceder al Pago" */}
       <div className="d-flex justify-content-end mt-3">
         <Button
           variant="success"
@@ -209,90 +229,119 @@ const Carrito = () => {
         </Button>
       </div>
 
-      {/* ============ MODAL DE SELECCIÓN DE PAGO ============ */}
-      <Modal 
-        show={showPaymentModal} 
+      {/* ================= MODAL ================= */}
+      <Modal
+        show={showPaymentModal}
         onHide={() => {
           setShowPaymentModal(false);
-          setPreferenceId(null); // Reset al cerrar
-        }} 
+          setPreferenceId(null);
+          setPaso(1);
+        }}
         centered
         size="lg"
       >
         <Modal.Header closeButton>
-          <Modal.Title>¿Con qué método quieres pagar?</Modal.Title>
+          <Modal.Title>
+            {paso === 1 && "Revisa tu pedido"}
+            {paso === 2 && "Datos para el retiro"}
+            {paso === 3 && "Selecciona un método de pago"}
+          </Modal.Title>
         </Modal.Header>
-        
+
         <Modal.Body className="text-center">
-          <p className="lead mb-4">
-            Total a Pagar: <strong className="text-success">${total}</strong>
-          </p>
+          {/* ⭐ PASO 1 */}
+          {paso === 1 && (
+            <Button className="w-100 btn-warning" onClick={() => setPaso(2)}>
+              Continuar ➜
+            </Button>
+          )}
 
-          {/* Si NO hay preferenceId, mostrar botones de selección */}
-          {!preferenceId ? (
+          {/* ⭐ PASO 2 - FORMULARIO DE RETIRO */}
+          {paso === 2 && (
+            <CheckoutDatosRetiro
+              onConfirm={(datos) => {
+                setDatosRetiro(datos);
+                setPaso(3);
+              }}
+              onClose={() => setPaso(1)}
+            />
+          )}
+
+          {/* ⭐ PASO 3 - MÉTODOS DE PAGO */}
+          {paso === 3 && (
             <>
-              <Button
-                variant="primary"
-                size="lg"
-                className="w-100 my-2 shadow-sm"
-                onClick={handlePagarMercadoPago}
-              >
-                💳 Pagar con Mercado Pago
-                <br />
-                <small className="d-block mt-1" style={{ fontSize: '0.85rem' }}>
-                  (Transferencia, Tarjeta, Efectivo)
-                </small>
-              </Button>
+              {!preferenceId ? (
+                <>
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    className="w-100 my-2 shadow-sm"
+                    onClick={handlePagarMercadoPago}
+                  >
+                    💳 Pagar con Mercado Pago
+                    <br />
+                    <small className="d-block mt-1" style={{ fontSize: "0.85rem" }}>
+                      (Transferencia, Tarjeta, Efectivo)
+                    </small>
+                  </Button>
 
-              <div className="my-3">
-                <hr />
-                <p className="text-muted">O</p>
-                <hr />
-              </div>
+                  <div className="my-3">
+                    <hr />
+                    <p className="text-muted">O</p>
+                    <hr />
+                  </div>
 
-              <Button
-                variant="secondary"
-                size="lg"
-                className="w-100 my-2 shadow-sm"
-                onClick={handlePagarEfectivo}
-              >
-                💵 Pago en Efectivo / Retiro en Local
-              </Button>
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    className="w-100 my-2 shadow-sm"
+                    onClick={handlePagarEfectivo}
+                  >
+                    💵 Pago en Efectivo / Retiro en Local
+                  </Button>
+                </>
+              ) : (
+                <div className="my-4">
+                  <p className="text-muted mb-3">Completa tu pago con Mercado Pago:</p>
+
+                  <div
+                    style={{
+                      width: "100%",
+                      maxWidth: "400px",
+                      margin: "0 auto",
+                    }}
+                  >
+                    <Wallet
+                      initialization={{ preferenceId: preferenceId }}
+                      customization={{
+                        texts: {
+                          action: "pay",
+                          valueProp: "security_safety",
+                        },
+                      }}
+                    />
+                  </div>
+
+                  <Button
+                    variant="outline-secondary"
+                    className="mt-3"
+                    onClick={() => setPreferenceId(null)}
+                  >
+                    ← Volver a Métodos de Pago
+                  </Button>
+                </div>
+              )}
             </>
-          ) : (
-            // Si HAY preferenceId, mostrar el Wallet de Mercado Pago
-            <div className="my-4">
-              <p className="text-muted mb-3">
-                Completa tu pago con Mercado Pago:
-              </p>
-              <div style={{ width: '100%', maxWidth: '400px', margin: '0 auto' }}>
-                <Wallet 
-                  initialization={{ preferenceId: preferenceId }}
-                  customization={{
-                    texts: {
-                      action: 'pay',
-                      valueProp: 'security_safety'
-                    }
-                  }}
-                />
-              </div>
-              <Button
-                variant="outline-secondary"
-                className="mt-3"
-                onClick={() => setPreferenceId(null)}
-              >
-                ← Volver a Métodos de Pago
-              </Button>
-            </div>
           )}
         </Modal.Body>
 
         <Modal.Footer>
-          <Button 
-            variant="outline-dark" 
+          <Button
+            variant="outline-dark"
             onClick={() => {
               setShowPaymentModal(false);
               setPreferenceId(null);
+              setPaso(1);
             }}
           >
             Cancelar
@@ -300,7 +349,7 @@ const Carrito = () => {
         </Modal.Footer>
       </Modal>
 
-      {/* ============ MODAL DE ERRORES ============ */}
+      {/* ================= MODAL DE ERRORES ================= */}
       <Modal
         show={errorModal.show}
         onHide={() => setErrorModal({ show: false, message: "" })}
@@ -313,8 +362,8 @@ const Carrito = () => {
           <p>{errorModal.message}</p>
         </Modal.Body>
         <Modal.Footer>
-          <Button 
-            variant="danger" 
+          <Button
+            variant="danger"
             onClick={() => setErrorModal({ show: false, message: "" })}
           >
             Cerrar
